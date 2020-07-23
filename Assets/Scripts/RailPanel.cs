@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class RailPanel : MonoBehaviour, IPointerClickHandler
 {
-  // Start is called before the first frame update
+  public Railway railway;
+  private StageManager stage;
+
   void Start()
   {
-
+    GameObject stageObj = GameObject.Find("Stage");
+    stage = stageObj.GetComponent<StageManager>();
   }
 
   // Update is called once per frame
@@ -19,7 +23,6 @@ public class RailPanel : MonoBehaviour, IPointerClickHandler
 
   public void OnPointerClick(PointerEventData pointerEventData)
   {
-    Debug.Log(name + " Game Object Clicked!");
+    stage.OnClick(this);
   }
-
 }

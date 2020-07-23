@@ -3,20 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Railway : int
-{
-    None = 0,
-    Stop = 1,
-    Cross = 2,
-    Right = 3,
-    Left = 4
-}
-
 public class StageManager : MonoBehaviour
 {
   public int rows = 10;
   public int cols = 10;
   public float tileSize = 1;
+  public GameObject empty;
   private Railway[][] course;
 
   void Start()
@@ -32,42 +24,42 @@ public class StageManager : MonoBehaviour
     railRefs.Add(Railway.Right, (GameObject)Instantiate(Resources.Load("railway3")));
     railRefs.Add(Railway.Left, (GameObject)Instantiate(Resources.Load("railway4")));
 
-    // for (int i = 0; i <= 3; i++)
-    // {
-    //   railRefs.Add((GameObject)Instantiate(Resources.Load($"railway{i}")));
-    // }
-    course = new Railway[rows][];
+    course = new Railway[cols][];
 
     var rand = new System.Random();
-    for (int row = 0; row < rows; row++)
+    for (int col = 0; col < cols; col++)
     {
-      course[row] = new Railway[cols];
-      for (int col = 0; col < cols; col++)
+      course[col] = new Railway[rows];
+      for (int row = 0; row < rows; row++)
       {
-        if (row != (int)(rows/2) || col != (int)(cols/2)) {
-          course[row][col] = (Railway)(rand.Next(4)+1);
+        if (row != (int)(rows / 2) || col != (int)(cols / 2))
+        {
+          course[col][row] = (Railway)(rand.Next(4) + 1);
+        }
+        else
+        {
+          empty.transform.position = new Vector2(col * tileSize, -row * tileSize);
         }
       }
     }
     course[0][0] = Railway.Cross;
     course[1][0] = Railway.Cross;
-    // course[2][0] = Railway.Cross;
 
-    for (int row = 0; row < rows; row++)
+    for (int col = 0; col < cols; col++)
     {
-      for (int col = 0; col < cols; col++)
+      for (int row = 0; row < rows; row++)
       {
-        Railway rail = course[row][col];
-        if (rail != Railway.None) {
+        Railway rail = course[col][row];
+        if (rail != Railway.None)
+        {
           GameObject railObj = (GameObject)Instantiate(railRefs[rail], transform);
-          float posX = col * tileSize;
-          float posY = -row * tileSize;
-          railObj.transform.position = new Vector2(posX, posY);
+          RailPanel panel = railObj.GetComponent<RailPanel>();
+          railObj.transform.position = new Vector2(col * tileSize, -row * tileSize);
         }
       }
     }
 
-    foreach(KeyValuePair<Railway, GameObject> kvp in railRefs )
+    foreach (KeyValuePair<Railway, GameObject> kvp in railRefs)
     {
       Destroy(kvp.Value);
     }
@@ -76,9 +68,23 @@ public class StageManager : MonoBehaviour
     float gridHight = rows * tileSize;
     transform.position = new Vector2((tileSize - gridWidth) / 2, (tileSize + gridHight) / 2);
   }
-  // Update is called once per frame
+
   void Update()
   {
 
+  }
+
+  public void OnClick(RailPanel panel)
+  {
+    var d = (panel.transform.position - empty.transform.position).sqrMagnitude;
+    if (d <= tileSize * tileSize)
+    {
+      //TODO update course
+
+      // switch positino
+      var oldEmptyPosition = empty.transform.position;
+      empty.transform.position = panel.transform.position;
+      panel.transform.position = oldEmptyPosition;
+    }
   }
 }
