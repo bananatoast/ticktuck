@@ -8,17 +8,30 @@ public class RailPanel : MonoBehaviour, IPointerClickHandler
 {
   public Railway railway;
   private StageManager stage;
+  private PlayerController player;
+  private bool isPlayerOn;
 
   void Start()
   {
     GameObject stageObj = GameObject.Find("Stage");
     stage = stageObj.GetComponent<StageManager>();
+    GameObject playerObj = GameObject.Find("Player");
+    player = playerObj.GetComponent<PlayerController>();
+    isPlayerOn = false;
   }
 
-  // Update is called once per frame
   void Update()
   {
-
+    var overlap = GetComponent<Collider2D>().OverlapPoint(player.transform.position);
+    if (isPlayerOn && !overlap)
+    {
+      isPlayerOn = false;
+    }
+    else if (!isPlayerOn && overlap)
+    {
+      isPlayerOn = true;
+      player.EnterPanel(this);
+    }
   }
 
   public void OnPointerClick(PointerEventData pointerEventData)

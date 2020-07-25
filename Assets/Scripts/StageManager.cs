@@ -9,6 +9,7 @@ public class StageManager : MonoBehaviour
   public int cols = 10;
   public float tileSize = 1;
   public GameObject empty;
+  public GameObject player;
   private Railway[][] course;
 
   void Start()
@@ -21,8 +22,8 @@ public class StageManager : MonoBehaviour
     var railRefs = new Dictionary<Railway, GameObject>();
     railRefs.Add(Railway.Stop, (GameObject)Instantiate(Resources.Load("railway1")));
     railRefs.Add(Railway.Cross, (GameObject)Instantiate(Resources.Load("railway2")));
-    railRefs.Add(Railway.Right, (GameObject)Instantiate(Resources.Load("railway3")));
-    railRefs.Add(Railway.Left, (GameObject)Instantiate(Resources.Load("railway4")));
+    railRefs.Add(Railway.LeftTop, (GameObject)Instantiate(Resources.Load("railway3")));
+    railRefs.Add(Railway.RightTop, (GameObject)Instantiate(Resources.Load("railway4")));
 
     course = new Railway[cols][];
 
@@ -64,18 +65,19 @@ public class StageManager : MonoBehaviour
       Destroy(kvp.Value);
     }
 
-    float gridWidth = cols * tileSize;
-    float gridHight = rows * tileSize;
-    transform.position = new Vector2((tileSize - gridWidth) / 2, (tileSize + gridHight) / 2);
+    // float gridWidth = cols * tileSize;
+    // float gridHight = rows * tileSize;
+    // transform.position = new Vector2((tileSize - gridWidth) / 2, (tileSize + gridHight) / 2);
   }
 
   void Update()
   {
-
   }
 
   public void OnClick(RailPanel panel)
   {
+    Debug.LogFormat("Click {0}", panel.transform.position);
+
     var d = (panel.transform.position - empty.transform.position).sqrMagnitude;
     if (d <= tileSize * tileSize)
     {
