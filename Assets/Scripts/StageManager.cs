@@ -45,7 +45,7 @@ public class StageManager : MonoBehaviour
     }
     course[0][0] = Railway.Cross;
     // course[1][0] = Railway.Cross;
-    // course[1][0] = Railway.RightTop;
+    course[1][0] = Railway.RightTop;
 
     for (int col = 0; col < cols; col++)
     {
