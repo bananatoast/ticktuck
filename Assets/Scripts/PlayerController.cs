@@ -27,12 +27,13 @@ public class PlayerController : MonoBehaviour
     next();
     // Debug.LogFormat("{0}", transform.position);
   }
-  public void EnterPanel(RailPanel panel)
+  public void EnterPanel(Panel panel)
   {
     rail = panel.railway;
     switch (rail)
     {
       case Railway.Stop:
+      case Railway.Wall:
         vector = -vector;
         next = () => { transform.position += vector * Speed; };
         break;

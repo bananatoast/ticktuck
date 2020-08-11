@@ -4,5 +4,6 @@ public enum Railway : int
   Stop = 1,
   Cross = 2,
   LeftTop = 3,
-  RightTop = 4
+  RightTop = 4,
+  Wall = 5
 }

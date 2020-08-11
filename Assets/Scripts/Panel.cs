@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class RailPanel : MonoBehaviour, IPointerClickHandler
+public class Panel : MonoBehaviour, IPointerClickHandler
 {
   public Railway railway;
   private StageManager stage;
@@ -36,6 +36,10 @@ public class RailPanel : MonoBehaviour, IPointerClickHandler
 
   public void OnPointerClick(PointerEventData pointerEventData)
   {
-    stage.OnClick(this);
+    if (railway != Railway.Wall && !isPlayerOn)
+    {
+      Debug.LogFormat("Click {0}", transform.position);
+      stage.OnClick(this);
+    }
   }
 }
