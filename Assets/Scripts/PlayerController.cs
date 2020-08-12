@@ -6,7 +6,9 @@ delegate void Move();
 
 public class PlayerController : MonoBehaviour
 {
-  static float Speed = 0.001f;
+  public int Speed = 1;
+
+  float baseSpeed = 0.001f;
   static Vector3 LeftTop = new Vector3(-0.5f, 0.5f, 0);
   static Vector3 LeftBottom = new Vector3(-0.5f, -0.5f, 0);
   static Vector3 RightTop = new Vector3(0.5f, 0.5f, 0);
@@ -19,7 +21,7 @@ public class PlayerController : MonoBehaviour
   void Start()
   {
     vector = new Vector3(1f, 0, 0);
-    next = () => { transform.position += vector * Speed; };
+    next = () => { transform.position += vector * baseSpeed * Speed; };
   }
 
   void Update()
@@ -35,15 +37,15 @@ public class PlayerController : MonoBehaviour
       case Railway.Stop:
       case Railway.Wall:
         vector = -vector;
-        next = () => { transform.position += vector * Speed; };
+        next = () => { transform.position += vector * baseSpeed * Speed; };
         break;
       case Railway.RightTop:
         pole = Vector3.Dot(vector, new Vector3(1, 1, 0)) > 0 ? LeftBottom : RightTop;
-        rotation = (Mathf.Abs(vector.x) < Speed / 10) ? 1 : -1;
+        rotation = (Mathf.Abs(vector.x) < baseSpeed * Speed / 10) ? 1 : -1;
         vector = Quaternion.Euler(0, 0, rotation * 90) * vector;
         next = () =>
         {
-          var angleAxis = Quaternion.AngleAxis(rotation * 360 / 10 * Time.deltaTime, Vector3.forward);
+          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 10 * Time.deltaTime, Vector3.forward);
           var pos = transform.position;
           pos -= (panel.transform.position + pole);
           pos = angleAxis * pos;
@@ -53,11 +55,11 @@ public class PlayerController : MonoBehaviour
         break;
       case Railway.LeftTop:
         pole = Vector3.Dot(vector, new Vector3(1, -1, 0)) > 0 ? LeftTop : RightButtom;
-        rotation = (Mathf.Abs(vector.y) < Speed / 10) ? 1 : -1;
+        rotation = (Mathf.Abs(vector.y) < baseSpeed * Speed / 10) ? 1 : -1;
         vector = Quaternion.Euler(0, 0, rotation * 90) * vector;
         next = () =>
         {
-          var angleAxis = Quaternion.AngleAxis(rotation * 360 / 10 * Time.deltaTime, Vector3.forward);
+          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 10 * Time.deltaTime, Vector3.forward);
           var pos = transform.position;
           pos -= (panel.transform.position + pole);
           pos = angleAxis * pos;
@@ -66,7 +68,7 @@ public class PlayerController : MonoBehaviour
         };
         break;
       default:
-        next = () => { transform.position += vector * Speed; };
+        next = () => { transform.position += vector * baseSpeed * Speed; };
         break;
     }
     Debug.Log($"Player entered:{panel.railway} {transform.position} v:({vector.x:0.00}, {vector.y:0.00}) r:{rotation}");
