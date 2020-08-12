@@ -10,7 +10,6 @@ public class StageManager : MonoBehaviour
   public float tileSize = 1;
   public GameObject empty;
   public GameObject player;
-  private Railway[][] course;
 
   void Start()
   {
@@ -26,39 +25,31 @@ public class StageManager : MonoBehaviour
     panelRefs.Add(Railway.RightTop, (GameObject)Instantiate(Resources.Load("railway4")));
     panelRefs.Add(Railway.Wall, (GameObject)Instantiate(Resources.Load("wall")));
 
-    course = new Railway[cols][];
+    // course = new Railway[cols][];
 
     var rand = new System.Random();
     for (int col = 0; col < cols; col++)
     {
-      course[col] = new Railway[rows];
       for (int row = 0; row < rows; row++)
       {
-        if (row != (int)(rows / 2) || col != (int)(cols / 2))
+        if (row == 0 && col == 0) // starting point
         {
-          course[col][row] = (Railway)(rand.Next(4) + 1);
+          GameObject panelObj = (GameObject)Instantiate(panelRefs[Railway.Cross], transform);
+          panelObj.transform.position = new Vector2(col * tileSize, -row * tileSize);
         }
-        else
+        else if (row == (int)(rows / 2) && col == (int)(cols / 2)) // center
         {
           empty.transform.position = new Vector2(col * tileSize, -row * tileSize);
         }
-      }
-    }
-    course[0][0] = Railway.Cross;
-    course[1][0] = Railway.RightTop;
-
-    for (int col = 0; col < cols; col++)
-    {
-      for (int row = 0; row < rows; row++)
-      {
-        Railway rail = course[col][row];
-        if (rail != Railway.None)
+        else
         {
+          var rail = (Railway)(rand.Next(4) + 1);
           GameObject panelObj = (GameObject)Instantiate(panelRefs[rail], transform);
           panelObj.transform.position = new Vector2(col * tileSize, -row * tileSize);
         }
       }
     }
+
     // Draw Walls
     DrawWalls((GameObject)Instantiate(panelRefs[Railway.Wall], transform));
 
@@ -109,8 +100,6 @@ public class StageManager : MonoBehaviour
     var d = (panel.transform.position - empty.transform.position).sqrMagnitude;
     if (d <= tileSize * tileSize)
     {
-      //TODO update course
-
       // switch position
       var oldEmptyPosition = empty.transform.position;
       empty.transform.position = panel.transform.position;
