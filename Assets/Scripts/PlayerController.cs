@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 delegate void Move();
 
 public class PlayerController : MonoBehaviour
 {
+  public GameObject message;
   public int Speed = 1;
-
   float baseSpeed = 0.001f;
   static Vector3 LeftTop = new Vector3(-0.5f, 0.5f, 0);
   static Vector3 LeftBottom = new Vector3(-0.5f, -0.5f, 0);
@@ -66,6 +66,11 @@ public class PlayerController : MonoBehaviour
           pos += (panel.transform.position + pole);
           transform.position = pos;
         };
+        break;
+      case Railway.Goal:
+        message.GetComponent<Text>().text = "Goal!!!";
+        message.SetActive(true);
+        next = () => { };
         break;
       default:
         next = () => { transform.position += vector * baseSpeed * Speed; };

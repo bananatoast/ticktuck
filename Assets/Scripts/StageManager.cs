@@ -25,8 +25,6 @@ public class StageManager : MonoBehaviour
     panelRefs.Add(Railway.RightTop, (GameObject)Instantiate(Resources.Load("railway4")));
     panelRefs.Add(Railway.Wall, (GameObject)Instantiate(Resources.Load("wall")));
 
-    // course = new Railway[cols][];
-
     var rand = new System.Random();
     for (int col = 0; col < cols; col++)
     {
@@ -51,7 +49,7 @@ public class StageManager : MonoBehaviour
     }
 
     // Draw Walls
-    DrawWalls((GameObject)Instantiate(panelRefs[Railway.Wall], transform));
+    DrawWallAndGoal(panelRefs[Railway.Wall]);
 
     // Destroy GameObjects
     foreach (KeyValuePair<Railway, GameObject> kvp in panelRefs)
@@ -65,7 +63,7 @@ public class StageManager : MonoBehaviour
     player.transform.position = leftTop;
   }
 
-  private void DrawWalls(GameObject wallRef)
+  private void DrawWallAndGoal(GameObject wallRef)
   {
     var walls = new List<Tuple<int, int>>();
     for (int col = -1; col <= cols; col++)  //ceil
@@ -80,7 +78,7 @@ public class StageManager : MonoBehaviour
     {
       walls.Add(new Tuple<int, int>(-1, row));
     }
-    for (int row = 0; row < rows; row++)  //right
+    for (int row = 0; row < rows - 1; row++)  //right
     {
       walls.Add(new Tuple<int, int>(cols, row));
     }
@@ -89,7 +87,9 @@ public class StageManager : MonoBehaviour
       GameObject panelObj = (GameObject)Instantiate(wallRef, transform);
       panelObj.transform.position = new Vector2(t.Item1 * tileSize, -t.Item2 * tileSize);
     });
-
+    // goal
+    GameObject goal = (GameObject)Instantiate(Resources.Load("goal"), transform);
+    goal.transform.position = new Vector2(cols * tileSize, -(rows - 1) * tileSize);
   }
   void Update()
   {
