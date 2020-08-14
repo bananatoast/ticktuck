@@ -7,6 +7,7 @@ delegate void Move();
 public class PlayerController : MonoBehaviour
 {
   public GameObject message;
+  private Text messageText;
   public Text timer;
   public int Speed = 1;
   float baseSpeed = 0.001f;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
   void Start()
   {
     vector = new Vector3(1f, 0, 0);
+    messageText = message.GetComponent<Text>();
     next = () => { transform.position += vector * baseSpeed * Speed; };
   }
 
@@ -46,7 +48,7 @@ public class PlayerController : MonoBehaviour
         vector = Quaternion.Euler(0, 0, rotation * 90) * vector;
         next = () =>
         {
-          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 10 * Time.deltaTime, Vector3.forward);
+          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 20 * Time.deltaTime, Vector3.forward);
           var pos = transform.position;
           pos -= (panel.transform.position + pole);
           pos = angleAxis * pos;
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
         vector = Quaternion.Euler(0, 0, rotation * 90) * vector;
         next = () =>
         {
-          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 10 * Time.deltaTime, Vector3.forward);
+          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 20 * Time.deltaTime, Vector3.forward);
           var pos = transform.position;
           pos -= (panel.transform.position + pole);
           pos = angleAxis * pos;
@@ -69,7 +71,15 @@ public class PlayerController : MonoBehaviour
         };
         break;
       case Railway.Goal:
-        message.GetComponent<Text>().text = "Goal!!!";
+        messageText.text = "Goal!";
+        messageText.color = Color.green;
+        message.SetActive(true);
+        timer.GetComponent<TimerController>().Stop();
+        next = () => { };
+        break;
+      case Railway.None:
+        messageText.text = "Game Over!";
+        messageText.color = Color.red;
         message.SetActive(true);
         timer.GetComponent<TimerController>().Stop();
         next = () => { };
