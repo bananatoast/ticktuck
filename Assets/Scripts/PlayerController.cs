@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
   void Update()
   {
     next();
-    // Debug.LogFormat("{0}", transform.position);
   }
   public void EnterPanel(Panel panel)
   {
@@ -88,6 +87,5 @@ public class PlayerController : MonoBehaviour
         next = () => { transform.position += vector * baseSpeed * Speed; };
         break;
     }
-    Debug.Log($"Player entered:{panel.railway} {transform.position} v:({vector.x:0.00}, {vector.y:0.00}) r:{rotation}");
   }
 }

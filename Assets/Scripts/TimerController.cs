@@ -29,6 +29,6 @@ public class TimerController : MonoBehaviour
   }
   private void displayTime()
   {
-    timer.text = "Time: " + current.ToString("0.0");
+    timer.text = $"Time: {current.ToString("0.0")}";
   }
 }
