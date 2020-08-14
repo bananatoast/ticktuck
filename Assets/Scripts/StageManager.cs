@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -105,5 +106,11 @@ public class StageManager : MonoBehaviour
       empty.transform.position = panel.transform.position;
       panel.transform.position = oldEmptyPosition;
     }
+  }
+
+  public void Reset()
+  {
+    Scene loadScene = SceneManager.GetActiveScene();
+    SceneManager.LoadScene(loadScene.name);
   }
 }

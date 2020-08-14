@@ -7,6 +7,7 @@ delegate void Move();
 public class PlayerController : MonoBehaviour
 {
   public GameObject message;
+  public Text timer;
   public int Speed = 1;
   float baseSpeed = 0.001f;
   static Vector3 LeftTop = new Vector3(-0.5f, 0.5f, 0);
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
       case Railway.Goal:
         message.GetComponent<Text>().text = "Goal!!!";
         message.SetActive(true);
+        timer.GetComponent<TimerController>().Stop();
         next = () => { };
         break;
       default:
