@@ -9,16 +9,18 @@ public class AccelerateButtonHandler : MonoBehaviour, IPointerDownHandler, IPoin
   public GameObject player;
   private PlayerController playerController;
   static int SPEED_UP = 20;
+  private int originalSpeed;
   void Start()
   {
     playerController = player.GetComponent<PlayerController>();
+    originalSpeed = playerController.Speed;
   }
   public void OnPointerDown(PointerEventData eventData)
   {
-    playerController.Speed += SPEED_UP;
+    playerController.Speed = originalSpeed + SPEED_UP;
   }
   public void OnPointerUp(PointerEventData eventData)
   {
-    playerController.Speed -= SPEED_UP;
+    playerController.Speed = originalSpeed;
   }
 }
