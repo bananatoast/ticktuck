@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         vector = Quaternion.Euler(0, 0, rotation * 90) * vector;
         next = () =>
         {
-          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 20 * Time.deltaTime, Vector3.forward);
+          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 30 * Time.deltaTime, Vector3.forward);
           var pos = transform.position;
           pos -= (panel.transform.position + pole);
           pos = angleAxis * pos;
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         vector = Quaternion.Euler(0, 0, rotation * 90) * vector;
         next = () =>
         {
-          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 20 * Time.deltaTime, Vector3.forward);
+          var angleAxis = Quaternion.AngleAxis(rotation * 360 * Speed / 30 * Time.deltaTime, Vector3.forward);
           var pos = transform.position;
           pos -= (panel.transform.position + pole);
           pos = angleAxis * pos;
